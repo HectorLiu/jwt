@@ -27,7 +27,8 @@ public class ShiroConfig {
 //        chainDefinition.addPathDefinition("/docs/**", "authc, perms[document:read]");
 
         // all other paths require a logged in user
-        chainDefinition.addPathDefinition("/**", "jwt");
+        chainDefinition.addPathDefinition("/api/**", "jwt");
+        chainDefinition.addPathDefinition("/**", "anon");
         return chainDefinition;
     }
 
@@ -49,7 +50,7 @@ public class ShiroConfig {
         Map<String, Filter> filterMap = new HashMap<>();
         filterMap.put("jwt", new JWTFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
-
+        shiroFilterFactoryBean.setLoginUrl("/api/login");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(shiroFilterChainDefinition.getFilterChainMap());
 
 

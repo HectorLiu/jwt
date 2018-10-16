@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LoginController {
 
     @ResponseBody
-    @GetMapping("/login")
+    @GetMapping("/api/login")
     public String index() {
         return "please login";
     }
