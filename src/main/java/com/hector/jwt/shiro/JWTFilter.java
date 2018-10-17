@@ -1,5 +1,6 @@
 package com.hector.jwt.shiro;
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,8 @@ public class JWTFilter extends AccessControlFilter {
     }
 
     private void executeLogin(ServletRequest request, ServletResponse response) {
-
-        JWTToken token = new JWTToken("hector-token");
+        JWTToken token = new JWTToken((HttpServletRequest) request);
+        token.init();
         getSubject(request, response).login(token);
     }
 
@@ -38,6 +39,7 @@ public class JWTFilter extends AccessControlFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         logger.info("JWTFilter onAccessDenied");
+        //
         return false;
     }
 }

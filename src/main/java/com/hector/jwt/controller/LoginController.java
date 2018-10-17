@@ -1,15 +1,30 @@
 package com.hector.jwt.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.JWT;
+import com.hector.jwt.base.Responder;
+import com.hector.jwt.base.Result;
+import com.hector.jwt.shiro.JWTUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class LoginController {
 
     @ResponseBody
-    @GetMapping("/api/login")
-    public String index() {
-        return "please login";
+    @PostMapping("/api/login")
+    public Result<Map<String, Object>> index(JSONObject requestJson) {
+        String username = requestJson.getString("username");
+        String password = requestJson.getString("password");
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("access_token", JWTUtil.sign(username, password));
+
+        return Responder.responseData(result);
     }
 }
