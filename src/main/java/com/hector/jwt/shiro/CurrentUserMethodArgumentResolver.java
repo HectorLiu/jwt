@@ -2,6 +2,7 @@ package com.hector.jwt.shiro;
 
 import com.hector.jwt.annotation.CurrentUser;
 import com.hector.jwt.model.User;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -26,7 +27,7 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         User user = (User) webRequest.getAttribute("currentUser", RequestAttributes.SCOPE_REQUEST);
         if (user == null) {
-            throw new UnauthorizedException("获取用户信息失败");
+            throw new UnauthenticatedException("获取用户信息失败");
         }
         return user;
     }

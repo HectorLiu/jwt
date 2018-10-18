@@ -56,7 +56,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public CurrentUserMethodArgumentResolver currentUserMethodArgumentResolver(){
+    public CurrentUserMethodArgumentResolver currentUserMethodArgumentResolver() {
         return new CurrentUserMethodArgumentResolver();
     }
 
@@ -74,6 +74,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
                     result.setCode(ResultCode.FAIL).setMessage(e.getMessage());
                 } else if (e instanceof UnauthenticatedException) {
                     result.setCode(ResultCode.UNAUTHORIZED).setMessage(e.getMessage());
+                } else if (e instanceof IllegalStateException) {
+
+                    if (e.getCause() instanceof IllegalArgumentException){
+                        result.setCode(ResultCode.FAIL).setMessage(e.getCause().getMessage());
+                    }
                 } else {
                     result.setCode(ResultCode.INTERNAL_SERVER_ERROR).setMessage("接口 [" + request.getRequestURI() + "] 内部错误，请联系管理员");
                     String message;

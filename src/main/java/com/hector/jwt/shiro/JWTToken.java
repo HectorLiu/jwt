@@ -40,7 +40,7 @@ public class JWTToken implements AuthenticationToken {
     private String parseToken(HttpServletRequest request) {
         String token = parser.parse(request);
         if (token.isEmpty()) {
-            throw new UnauthenticatedException();
+            throw new UnauthenticatedException("invalid token");
         }
         return token;
     }
